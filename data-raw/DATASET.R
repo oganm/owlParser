@@ -1,6 +1,10 @@
 library(magrittr)
 
-options(timeout=1000)
+
+# this seems to fail a lot...
+
+options(timeout=100)
+
 
 
 ontology_owls = list(
@@ -11,7 +15,6 @@ ontology_owls = list(
     hp = "http://purl.obolibrary.org/obo/hp.owl",
     uberon = "http://purl.obolibrary.org/obo/uberon.owl",
     clo = "http://purl.obolibrary.org/obo/clo.owl",
-    efo = "https://www.ebi.ac.uk/efo/efo.owl",
     obi = "http://purl.obolibrary.org/obo/obi.owl",
     go = "http://purl.obolibrary.org/obo/go.owl",
     efo = "https://www.ebi.ac.uk/efo/efo.owl",
@@ -34,11 +37,18 @@ ontology_obos = list(
 
 dir.create('data-raw/owl',showWarnings = FALSE)
 names(ontology_owls) %>% lapply(function(x){
-    download.file(ontology_owls[[x]],destfile = file.path('data-raw/owl',x))
+    tryCatch(download.file(ontology_owls[[x]],destfile = file.path('data-raw/owl',x)),
+             error = function(e){
+                 file.remove(file.path('data-raw/owl',x))
+                 cat(paste('owl',x,'\n'),file = 'data-raw/failures',append = TRUE)
+             })
 })
 
 dir.create('data-raw/obo',showWarnings = FALSE)
 names(ontology_obos) %>% lapply(function(x){
-    download.file(ontology_obos[[x]],destfile = file.path('data-raw/obo',x))
-})
+    tryCatch(download.file(ontology_obos[[x]],destfile = file.path('data-raw/obo',x)),
+             error = function(e){
+                 file.remove(file.path('data-raw/obo',x))
+                 cat(paste('obo',x,'\n'),file = 'data-raw/failures',append = TRUE)
+             })})
 
