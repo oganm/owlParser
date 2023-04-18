@@ -46,6 +46,43 @@ get_file_elements = function(f,memoised = TRUE){
     get_elements(onto)
 }
 
+
+get_onto_imports = function(onto,env,memoised = TRUE){
+
+    imported_elements = onto$imports[!onto$imports %in% env$uris] %>% lapply(function(x){
+        get_file_elements(x,memoised = memoised)
+    })
+    names(imported_elements) = onto$imports[!onto$imports %in% env$uris]
+
+
+    env$uris = c(env$uris,onto$imports)
+
+
+    recursive_imports = imported_elements %>% lapply(function(x){
+        get_onto_imports(process_ontology(x$Ontology),env = env,memoised = memoised)
+    }) %>% unname %>%  unlist( recursive = FALSE)
+    c(imported_elements,recursive_imports)
+}
+
+
+process_ontology = function(onto_xml){
+    ontology_elements <- get_elements(onto_xml)
+    ontology =
+        list(ontologyIRI = onto_xml %>% xml2::xml_attr('about'),
+             versionIRI = ontology_elements$versionIRI %>% xml2::xml_attr('resource'),
+             version = ontology_elements$versionInfo %>% xml2::xml_contents() %>% as.character(),
+             title = ontology_elements$title %>% xml2::xml_contents() %>% as.character(),
+             description = ontology_elements$description %>% xml2::xml_contents() %>% as.character(),
+             roots = ontology_elements$IAO_0000700 %>% xml2::xml_attr('resource'),
+             imports =
+                 ontology_elements$imports %>% xml2::xml_attr('resource'),
+             default_namespace = ontology_elements$`default-namespace` %>% xml2::xml_contents() %>% as.character()
+        )
+
+    return(ontology)
+}
+
+
 clear_cache = function(){
     unlink(rappdirs::user_cache_dir(appname ='owlParser'),recursive = TRUE)
 }
