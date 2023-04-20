@@ -2,7 +2,7 @@
 
 
 get_file = function(f,memoised = TRUE){
-    if(!is.character(memoised)){
+    if(is.character(memoised)){
         cache = memoised
     } else {
         cache = rappdirs::user_cache_dir(appname ='owlParser')
