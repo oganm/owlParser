@@ -19,7 +19,8 @@ ontology_owls = list(
     go = "http://purl.obolibrary.org/obo/go.owl",
     efo = "https://www.ebi.ac.uk/efo/efo.owl",
     ehdaa= 'http://purl.obolibrary.org/obo/ehdaa2.owl',
-    emapa = "http://purl.obolibrary.org/obo/emapa.owl"
+    emapa = "http://purl.obolibrary.org/obo/emapa.owl",
+    mondo = 'http://purl.obolibrary.org/obo/mondo.owl'
 )
 
 ontology_obos = list(
@@ -31,7 +32,8 @@ ontology_obos = list(
     uberon = 'http://purl.obolibrary.org/obo/uberon/basic.obo',
     efo = 'http://www.ebi.ac.uk/efo/efo.obo',
     ehdaa = 'http://purl.obolibrary.org/obo/ehdaa2.obo',
-    emapa = 'http://purl.obolibrary.org/obo/emapa.obo'
+    emapa = 'http://purl.obolibrary.org/obo/emapa.obo',
+    mondo = 'http://purl.obolibrary.org/obo/mondo.obo'
 )
 
 
