@@ -25,9 +25,13 @@ process_class = function(class_xml){
 
 
     Class = list(IRI = class_xml %>% xml2::xml_attr('about'),
-                 Definition = class_elements$IAO_0000115 %>% xml2::xml_text(),
-                 AlternativeIds = class_elements$hasAlternativeId %>% xml2::xml_text(),
-                 ReplacedBy = replacement,
+                 definition = class_elements$IAO_0000115 %>% xml2::xml_text(),
+                 alternativeIds = class_elements$hasAlternativeId %>% xml2::xml_text(),
+                 exactMatch = class_elements$exactMatch %>% xml_attr('resource'),
+                 xrefs = class_elements$hasDbXref %>% xml_text(),
+                 label = class_elements$label %>% xml2::xml_text(),
+                 exactSynonyms = class_elements$hasExactSynonym %>% xml2::xml_text(),
+                 replacedBy = replacement,
                  deprecated = class_elements$deprecated %>% xml2::xml_text() %>% {ifelse(length(.)!=0 && . =='true',TRUE,FALSE)},
                  source = as.character(class_xml))
 }
