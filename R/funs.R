@@ -59,7 +59,7 @@ single_onto_imports = function(onto,env,cache = TRUE){
 
 
     recursive_imports = imported_elements %>% lapply(function(x){
-        single_onto_imports(process_ontology(x$Ontology),env = env,cache = cache)
+        single_onto_imports(process_ontology(x$`owl:Ontology`),env = env,cache = cache)
     }) %>% unname %>%  unlist( recursive = FALSE)
     c(imported_elements,recursive_imports)
 }

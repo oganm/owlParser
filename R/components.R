@@ -1,16 +1,18 @@
 process_ontology = function(onto_xml){
     ontology_elements <- get_elements(onto_xml)
+    ns = xml2::xml_ns(onto_xml)
     ontology =
-        list(ontologyIRI = onto_xml %>% xml2::xml_attr('about'),
-             versionIRI = ontology_elements$versionIRI %>% xml2::xml_attr('resource'),
-             version = ontology_elements$versionInfo %>% xml2::xml_contents() %>% as.character(),
-             title = ontology_elements$title %>% xml2::xml_contents() %>% as.character(),
-             description = ontology_elements$description %>% xml2::xml_contents() %>% as.character(),
-             roots = ontology_elements$IAO_0000700 %>% xml2::xml_attr('resource'),
+        list(ontologyIRI = onto_xml %>% xml2::xml_attr('rdf:about',ns = ns),
+             versionIRI = ontology_elements$`owl:versionIRI` %>% xml2::xml_attr('rdf:resource',ns = ns),
+             version = ontology_elements$`owl:versionInfo` %>% xml2::xml_contents() %>% as.character(),
+             title = ontology_elements$`dc:title` %>% xml2::xml_contents() %>% as.character(),
+             description = ontology_elements$`dc:description` %>% xml2::xml_contents() %>% as.character(),
+             roots = ontology_elements$`obo:IAO_0000700` %>% xml2::xml_attr('rdf:resource',ns = ns),
              imports =
-                 ontology_elements$imports %>% xml2::xml_attr('resource'),
-             default_namespace = ontology_elements$`default-namespace` %>% xml2::xml_contents() %>% as.character(),
-             source = as.character(onto_xml)
+                 ontology_elements$`owl:imports` %>% xml2::xml_attr('rdf:resource',ns = ns),
+             default_namespace = ontology_elements$`oboInOwl:default-namespace` %>% xml2::xml_contents() %>% as.character(),
+             source = as.character(onto_xml),
+             xml = onto_xml
         )
 
     return(ontology)
