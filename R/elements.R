@@ -2,7 +2,7 @@
 #' @export
 get_elements = function(parent){
     children <- xml2::xml_children(parent)
-    children_types <- xml2::xml_name(children)
+    children_types <- xml2::xml_name(children,xml2::xml_ns(children))
 
     elements <- children_types %>% unique %>%  lapply(function(x){
         children[children_types == x]

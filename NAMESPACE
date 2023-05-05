@@ -2,4 +2,8 @@
 
 S3method("$",elements)
 S3method("[[",elements)
+export("%<>%")
+export("%>%")
 export(get_elements)
+importFrom(magrittr,"%<>%")
+importFrom(magrittr,"%>%")
