@@ -1,8 +1,12 @@
 # get elements of distinct types, grouping them together for easier processing
 #' @export
-get_elements = function(parent){
+get_elements = function(parent,namespace = TRUE){
     children <- xml2::xml_children(parent)
-    children_types <- xml2::xml_name(children,xml2::xml_ns(children))
+    if(namespace){
+        children_types <- xml2::xml_name(children,xml2::xml_ns(children))
+    } else{
+        children_types <- xml2::xml_name(children)
+    }
 
     elements <- children_types %>% unique %>%  lapply(function(x){
         children[children_types == x]
